@@ -455,7 +455,7 @@
             </div>
             <div class="info-row">
                 <span class="info-label">Version:</span>
-                <span class="info-value"><span class="badge badge-blue">v3.3</span></span>
+                <span class="info-value"><span class="badge badge-blue">v3.4</span></span>
             </div>
         </div>
 
@@ -489,15 +489,9 @@
         tg.setHeaderColor('#0a0820');
         tg.setBackgroundColor('#0a0820');
 
-        /* ============================================================
-           🔒 BACKEND URL — TOKEN YO'Q, XAVFSIZ!
-           ============================================================ */
         const API_URL = "https://tommy-backend.onrender.com/send-feedback";
         const CHANNEL_USERNAME = "@TommyXcheat2";
 
-        /* ============================================================
-           🔔 STATUS OVERLAY
-           ============================================================ */
         const statusOverlay = document.getElementById('status-overlay');
         const statusIcon    = document.getElementById('status-icon');
         const statusTitle   = document.getElementById('status-title');
@@ -550,9 +544,6 @@
             statusOverlay.classList.remove('show');
         }
 
-        /* ============================================================
-           📊 FPS
-           ============================================================ */
         const fpsCounterEl = document.getElementById('fps-counter');
         const fpsValueEl   = document.getElementById('fps-value');
         let fpsFrames = 0;
@@ -589,9 +580,6 @@
             }
         }
 
-        /* ============================================================
-           🌌 CANVAS
-           ============================================================ */
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true });
         let W = 0, H = 0;
@@ -737,9 +725,6 @@
             }
         });
 
-        /* ============================================================
-           🎵 AUDIO
-           ============================================================ */
         let audioCtx = null, musicBus = null, compressor = null;
         let musicFilter = null, musicDelay = null, musicDelayFb = null, musicDelayWet = null;
         let musicPlaying = false, schedulerTimer = null;
@@ -1036,9 +1021,6 @@
             document.addEventListener('click', kick, { once: true });
         }
 
-        /* ============================================================
-           👤 USER INFO
-           ============================================================ */
         const user = tg.initDataUnsafe.user;
         if (user) {
             const fullName = ((user.first_name || '') + ' ' + (user.last_name || '')).trim();
@@ -1078,9 +1060,6 @@
             });
         });
 
-        /* ============================================================
-           📸 PHOTO UPLOAD
-           ============================================================ */
         const photoBox = document.getElementById('photo-box');
         const photoInput = document.getElementById('photo-input');
         const photoPreview = document.getElementById('photo-preview');
@@ -1295,9 +1274,6 @@
 
         function openStatistics() { tg.openTelegramLink("https://t.me/TommyXcheat2"); }
 
-        /* ============================================================
-           🚀 START NEW — Backend orqali yuborish
-           ============================================================ */
         async function startNew() {
             const playerId = document.getElementById('player-id').value.trim();
             const kills = document.getElementById('kills').value.trim();
@@ -1317,27 +1293,27 @@
 
             showStatus('loading', 'Please wait, sending to channel.');
 
-            /* ===== CAPTION — AKATSUKI FEED uslubi ===== */
+            /* ===== CAPTION — TOMMY BOT uslubi ===== */
             const hiddenId = playerId.substring(0, 3) + "***" + playerId.substring(8);
             const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
+            const hours   = String(now.getHours()).padStart(2, '0');
             const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const year = now.getFullYear();
+            const day     = String(now.getDate()).padStart(2, '0');
+            const month   = String(now.getMonth() + 1).padStart(2, '0');
+            const year    = now.getFullYear();
 
-            const timeStr = `${hours}:${minutes}:${seconds}  ${day}/${month}/${year}`;
+            const timeStr = `${hours}:${minutes}  ${day}.${month}.${year}`;
             const ownerInfo = buildOwnerInfo();
 
             const caption =
-                `TG ${CHANNEL_USERNAME}\n\n` +
-                `TIME : ${timeStr}\n` +
-                `PLAYER : *****\n` +
-                `TARGET UID : ${hiddenId}\n` +
-                `TOTAL KILLS: ${kills}\n` +
-                `TIER RANK : ${selectedClassic}\n` +
-                `OWNER: ${ownerInfo.plain}`;
+                `👤 OWNER: ${ownerInfo.plain}\n` +
+                `🎮 Player ID: ${hiddenId}\n` +
+                `🏆 CLASSIC RANK: ${selectedClassic}\n` +
+                `🏆 ULTIMATE ROYALE RANK: ${selectedUltimate}\n` +
+                `🕒 TIME: ${timeStr}\n` +
+                `💀 KILL: ${kills}\n` +
+                `\n` +
+                `👤 OWNER: @Tommy_1727 ✅`;
 
             /* ===== BACKENDGA YUBORISH ===== */
             const formData = new FormData();
@@ -1380,4 +1356,4 @@
         armAutoStart();
     </script>
 </body>
-  </html>
+</html>
