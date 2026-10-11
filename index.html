@@ -362,22 +362,10 @@
 
         <div class="card fade-in">
             <div class="card-title">👤 Your Information</div>
-            <div class="info-row">
-                <span class="info-label">Name:</span>
-                <span class="info-value" id="user-name">Loading...</span>
-            </div>
-            <div class="info-row">
-                <span class="info-label">Username:</span>
-                <span class="info-value green" id="user-username">-</span>
-            </div>
-            <div class="info-row">
-                <span class="info-label">Telegram ID:</span>
-                <span class="info-value" id="user-id">-</span>
-            </div>
-            <div class="info-row">
-                <span class="info-label">Status:</span>
-                <span class="info-value"><span class="badge badge-green">✅ ACTIVE</span></span>
-            </div>
+            <div class="info-row"><span class="info-label">Name:</span><span class="info-value" id="user-name">Loading...</span></div>
+            <div class="info-row"><span class="info-label">Username:</span><span class="info-value green" id="user-username">-</span></div>
+            <div class="info-row"><span class="info-label">Telegram ID:</span><span class="info-value" id="user-id">-</span></div>
+            <div class="info-row"><span class="info-label">Status:</span><span class="info-value"><span class="badge badge-green">✅ ACTIVE</span></span></div>
         </div>
 
         <div class="card fade-in">
@@ -437,26 +425,10 @@
 
         <div class="card fade-in">
             <div class="card-title">👤 FOR INQUIRIES</div>
-            <div class="info-row">
-                <span class="info-label">Bot name:</span>
-                <span class="info-value"><span class="bot-name">TOMMY BOT</span></span>
-            </div>
-            <div class="info-row">
-                <span class="info-label">Channel:</span>
-                <span class="info-value">
-                    <a class="info-link channel" onclick="openChannel()">@TommyXcheat2</a>
-                </span>
-            </div>
-            <div class="info-row">
-                <span class="info-label">Owner:</span>
-                <span class="info-value">
-                    <a class="info-link owner" onclick="openOwner()">@Tommy_1727</a>
-                </span>
-            </div>
-            <div class="info-row">
-                <span class="info-label">Version:</span>
-                <span class="info-value"><span class="badge badge-blue">v3.4</span></span>
-            </div>
+            <div class="info-row"><span class="info-label">Bot name:</span><span class="info-value"><span class="bot-name">TOMMY BOT</span></span></div>
+            <div class="info-row"><span class="info-label">Channel:</span><span class="info-value"><a class="info-link channel" onclick="openChannel()">@TommyXcheat2</a></span></div>
+            <div class="info-row"><span class="info-label">Owner:</span><span class="info-value"><a class="info-link owner" onclick="openOwner()">@Tommy_1727</a></span></div>
+            <div class="info-row"><span class="info-label">Version:</span><span class="info-value"><span class="badge badge-blue">v3.4</span></span></div>
         </div>
 
         <button class="btn btn-primary" onclick="openStatistics()">📊 STATISTICS</button>
@@ -475,9 +447,7 @@
             <div class="status-icon" id="status-icon">⏳</div>
             <div class="status-title" id="status-title">Sending...</div>
             <div class="status-desc" id="status-desc">Please wait, sending to channel.</div>
-            <div class="status-bar">
-                <div class="status-bar-fill" id="status-bar-fill"></div>
-            </div>
+            <div class="status-bar"><div class="status-bar-fill" id="status-bar-fill"></div></div>
             <button class="status-btn loading" id="status-btn" onclick="closeStatus()">Please wait...</button>
         </div>
     </div>
@@ -540,17 +510,11 @@
             }
         }
 
-        function closeStatus() {
-            statusOverlay.classList.remove('show');
-        }
+        function closeStatus() { statusOverlay.classList.remove('show'); }
 
         const fpsCounterEl = document.getElementById('fps-counter');
         const fpsValueEl   = document.getElementById('fps-value');
-        let fpsFrames = 0;
-        let fpsLastTime = performance.now();
-        let currentFPS = 60;
-        let lowFpsStreak = 0;
-        let particleCountMult = 1.0;
+        let fpsFrames = 0, fpsLastTime = performance.now(), currentFPS = 60, lowFpsStreak = 0, particleCountMult = 1.0;
 
         function updateFPS() {
             fpsFrames++;
@@ -559,8 +523,7 @@
             if (elapsed >= 500) {
                 currentFPS = Math.round((fpsFrames * 1000) / elapsed);
                 fpsValueEl.textContent = currentFPS;
-                fpsFrames = 0;
-                fpsLastTime = now;
+                fpsFrames = 0; fpsLastTime = now;
                 fpsCounterEl.classList.remove('low', 'bad');
                 if (currentFPS < 40) fpsCounterEl.classList.add('bad');
                 else if (currentFPS < 55) fpsCounterEl.classList.add('low');
@@ -568,26 +531,19 @@
                     lowFpsStreak++;
                     if (lowFpsStreak >= 1 && particleCountMult > 0.3) {
                         particleCountMult = Math.max(0.3, particleCountMult - 0.2);
-                        rebuildParticles();
-                        lowFpsStreak = 0;
+                        rebuildParticles(); lowFpsStreak = 0;
                     }
                 } else if (currentFPS >= 60 && particleCountMult < 1.0) {
                     particleCountMult = Math.min(1.0, particleCountMult + 0.1);
                     rebuildParticles();
-                } else {
-                    lowFpsStreak = 0;
-                }
+                } else { lowFpsStreak = 0; }
             }
         }
 
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true });
-        let W = 0, H = 0;
-        let particles = [];
-        let ripples = [];
-        let maxParticles = 25;
-        const CONNECTION_DIST = 130;
-        const CONNECTION_DIST_SQ = CONNECTION_DIST * CONNECTION_DIST;
+        let W = 0, H = 0, particles = [], ripples = [], maxParticles = 25;
+        const CONNECTION_DIST = 130, CONNECTION_DIST_SQ = CONNECTION_DIST * CONNECTION_DIST;
 
         function computeMaxParticles() {
             const area = window.innerWidth * window.innerHeight;
@@ -597,23 +553,20 @@
 
         function resizeCanvas() {
             const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-            W = window.innerWidth;
-            H = window.innerHeight;
-            canvas.width  = Math.floor(W * dpr);
-            canvas.height = Math.floor(H * dpr);
-            canvas.style.width  = W + 'px';
-            canvas.style.height = H + 'px';
+            W = window.innerWidth; H = window.innerHeight;
+            canvas.width  = Math.floor(W * dpr); canvas.height = Math.floor(H * dpr);
+            canvas.style.width  = W + 'px'; canvas.style.height = H + 'px';
             ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         }
 
         function newParticle() {
-            const hue = [140, 210, 280][Math.floor(Math.random() * 3)];
             return {
                 x: Math.random() * W, y: Math.random() * H,
                 r: Math.random() * 1.4 + 0.6,
                 vx: (Math.random() - 0.5) * 0.28,
                 vy: (Math.random() - 0.5) * 0.28,
-                hue, a: Math.random() * 0.45 + 0.3
+                hue: [140, 210, 280][Math.floor(Math.random() * 3)],
+                a: Math.random() * 0.45 + 0.3
             };
         }
 
@@ -624,8 +577,7 @@
         }
 
         function initBackground() {
-            resizeCanvas();
-            particles = [];
+            resizeCanvas(); particles = [];
             const count = computeMaxParticles();
             for (let i = 0; i < count; i++) particles.push(newParticle());
             ripples = [];
@@ -660,17 +612,12 @@
                 const pi = particles[i];
                 for (let j = i + 1; j < n; j++) {
                     const pj = particles[j];
-                    const dx = pi.x - pj.x;
-                    const dy = pi.y - pj.y;
+                    const dx = pi.x - pj.x, dy = pi.y - pj.y;
                     const d2 = dx * dx + dy * dy;
                     if (d2 < CONNECTION_DIST_SQ) {
                         const alpha = (1 - Math.sqrt(d2) / CONNECTION_DIST) * 0.13;
-                        ctx.beginPath();
-                        ctx.strokeStyle = `hsla(160, 70%, 55%, ${alpha})`;
-                        ctx.lineWidth = 0.55;
-                        ctx.moveTo(pi.x, pi.y);
-                        ctx.lineTo(pj.x, pj.y);
-                        ctx.stroke();
+                        ctx.beginPath(); ctx.strokeStyle = `hsla(160, 70%, 55%, ${alpha})`;
+                        ctx.lineWidth = 0.55; ctx.moveTo(pi.x, pi.y); ctx.lineTo(pj.x, pj.y); ctx.stroke();
                     }
                 }
             }
@@ -679,10 +626,9 @@
                 p.x += p.vx; p.y += p.vy;
                 if (p.x < 0 || p.x > W) p.vx = -p.vx;
                 if (p.y < 0 || p.y > H) p.vy = -p.vy;
-                const r3 = p.r * 3;
                 ctx.beginPath();
                 ctx.fillStyle = `hsla(${p.hue}, 80%, 68%, ${p.a})`;
-                ctx.arc(p.x, p.y, r3, 0, Math.PI * 2);
+                ctx.arc(p.x, p.y, p.r * 3, 0, Math.PI * 2);
                 ctx.fill();
             }
             for (let i = ripples.length - 1; i >= 0; i--) {
@@ -698,39 +644,26 @@
             }
         }
 
-        const TARGET_FPS = 60;
-        const FRAME_INTERVAL = 1000 / TARGET_FPS;
-        let lastFrameTime = 0;
-        let masterRafId = null;
-
+        const FRAME_INTERVAL = 1000 / 60;
+        let lastFrameTime = 0, masterRafId = null;
         function masterLoop(now) {
             masterRafId = requestAnimationFrame(masterLoop);
             const delta = now - lastFrameTime;
             if (delta < FRAME_INTERVAL - 0.5) return;
-            lastFrameTime = now;
-            updateFPS();
-            drawBackground();
+            lastFrameTime = now; updateFPS(); drawBackground();
         }
         masterRafId = requestAnimationFrame(masterLoop);
 
         document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                if (masterRafId) cancelAnimationFrame(masterRafId);
-                masterRafId = null;
-            } else if (!masterRafId) {
-                fpsFrames = 0;
-                fpsLastTime = performance.now();
-                lastFrameTime = 0;
-                masterRafId = requestAnimationFrame(masterLoop);
-            }
+            if (document.hidden) { if (masterRafId) cancelAnimationFrame(masterRafId); masterRafId = null; }
+            else if (!masterRafId) { fpsFrames = 0; fpsLastTime = performance.now(); lastFrameTime = 0; masterRafId = requestAnimationFrame(masterLoop); }
         });
 
-        let audioCtx = null, musicBus = null, compressor = null;
-        let musicFilter = null, musicDelay = null, musicDelayFb = null, musicDelayWet = null;
+        // AUDIO
+        let audioCtx = null, musicBus = null, compressor = null, musicFilter = null;
+        let musicDelay = null, musicDelayFb = null, musicDelayWet = null;
         let musicPlaying = false, schedulerTimer = null;
-        let droneOsc1 = null, droneGain1 = null;
-        let droneOsc2 = null, droneGain2 = null;
-        let droneOsc3 = null, droneGain3 = null;
+        let droneOsc1 = null, droneGain1 = null, droneOsc2 = null, droneGain2 = null, droneOsc3 = null, droneGain3 = null;
 
         const SCHEDULE_AHEAD = 0.8, SCHEDULER_TICK = 200, MEASURE_DURATION = 12.0;
         const NOTE_FADE_IN = 1.5, NOTE_FADE_OUT = 2.0, FADE_EPSILON = 0.0008;
@@ -740,12 +673,12 @@
         let nextChordTime = 0, chordIndex = 0;
 
         const CHORDS = [
-            { bass: 87.31,  notes: [349.23, 440.00, 523.25] },
-            { bass: 98.00,  notes: [392.00, 466.16, 587.33] },
-            { bass: 73.42,  notes: [293.66, 349.23, 440.00] },
+            { bass: 87.31, notes: [349.23, 440.00, 523.25] },
+            { bass: 98.00, notes: [392.00, 466.16, 587.33] },
+            { bass: 73.42, notes: [293.66, 349.23, 440.00] },
             { bass: 116.54, notes: [466.16, 587.33, 698.46] },
             { bass: 130.81, notes: [261.63, 311.13, 392.00] },
-            { bass: 87.31,  notes: [349.23, 440.00, 523.25] }
+            { bass: 87.31, notes: [349.23, 440.00, 523.25] }
         ];
 
         const MELODY_NOTES = [
@@ -761,15 +694,12 @@
             catch (e) { return null; }
             return audioCtx;
         }
-
         function unlockAudio() {
             const c = ensureAudio();
             if (c && c.state === 'suspended') c.resume();
         }
-
         function buildAudioGraph() {
-            const c = ensureAudio();
-            if (!c) return;
+            const c = ensureAudio(); if (!c) return;
             compressor = c.createDynamicsCompressor();
             compressor.threshold.value = -20; compressor.knee.value = 30;
             compressor.ratio.value = 8; compressor.attack.value = 0.01;
@@ -786,7 +716,6 @@
             musicDelay.connect(musicDelayFb); musicDelayFb.connect(musicDelay);
             musicDelay.connect(musicDelayWet); musicDelayWet.connect(musicBus);
         }
-
         function startDrone() {
             const c = audioCtx;
             droneOsc1 = c.createOscillator(); droneOsc1.type = 'sine'; droneOsc1.frequency.value = 87.31;
@@ -794,20 +723,17 @@
             droneGain1.gain.setValueAtTime(0, c.currentTime);
             droneGain1.gain.linearRampToValueAtTime(0.055, c.currentTime + 6);
             droneOsc1.connect(droneGain1); droneGain1.connect(musicFilter); droneGain1.connect(musicDelay); droneOsc1.start();
-
             droneOsc2 = c.createOscillator(); droneOsc2.type = 'sine'; droneOsc2.frequency.value = 130.81;
             droneGain2 = c.createGain();
             droneGain2.gain.setValueAtTime(0, c.currentTime);
             droneGain2.gain.linearRampToValueAtTime(0.035, c.currentTime + 8);
             droneOsc2.connect(droneGain2); droneGain2.connect(musicFilter); droneGain2.connect(musicDelay); droneOsc2.start();
-
             droneOsc3 = c.createOscillator(); droneOsc3.type = 'sine'; droneOsc3.frequency.value = 349.23;
             droneGain3 = c.createGain();
             droneGain3.gain.setValueAtTime(0, c.currentTime);
             droneGain3.gain.linearRampToValueAtTime(0.012, c.currentTime + 10);
             droneOsc3.connect(droneGain3); droneGain3.connect(musicFilter); droneGain3.connect(musicDelay); droneOsc3.start();
         }
-
         function stopDrone() {
             const c = audioCtx; if (!c) return;
             const now = c.currentTime, end = now + 3.0;
@@ -817,17 +743,11 @@
                 });
             } catch (e) {}
             setTimeout(() => {
-                [droneOsc1, droneOsc2, droneOsc3].forEach(o => {
-                    try { o && o.stop(); } catch (e) {}
-                    try { o && o.disconnect(); } catch (e) {}
-                });
-                [droneGain1, droneGain2, droneGain3].forEach(g => {
-                    try { g && g.disconnect(); } catch (e) {}
-                });
+                [droneOsc1, droneOsc2, droneOsc3].forEach(o => { try { o && o.stop(); } catch (e) {} try { o && o.disconnect(); } catch (e) {} });
+                [droneGain1, droneGain2, droneGain3].forEach(g => { try { g && g.disconnect(); } catch (e) {} });
                 droneOsc1 = droneGain1 = droneOsc2 = droneGain2 = droneOsc3 = droneGain3 = null;
             }, 3200);
         }
-
         function addPadVoice(freq, type, startTime, dur, peak) {
             const c = audioCtx;
             const osc = c.createOscillator(); osc.type = type; osc.frequency.value = freq;
@@ -841,7 +761,6 @@
             osc.start(startTime); osc.stop(startTime + dur + 0.1);
             osc.onended = () => { try { g.disconnect(); osc.disconnect(); } catch (e) {} };
         }
-
         function addMelodyNote(freq, startTime) {
             const c = audioCtx; const dur = 3.2;
             const osc = c.createOscillator(); osc.type = 'triangle'; osc.frequency.value = freq;
@@ -863,7 +782,6 @@
             osc.stop(startTime + dur + 0.05); harm.stop(startTime + dur + 0.05);
             osc.onended = () => { try { g.disconnect(); gh.disconnect(); osc.disconnect(); harm.disconnect(); } catch (e) {} };
         }
-
         function scheduleMeasure(startTime) {
             const chord = CHORDS[chordIndex % CHORDS.length]; chordIndex++;
             addPadVoice(chord.bass, 'sine', startTime, MEASURE_DURATION, 0.09);
@@ -874,14 +792,12 @@
                 addMelodyNote(note, startTime + k * step);
             }
         }
-
         function musicScheduler() {
             if (!musicPlaying || !audioCtx) return;
             while (nextChordTime < audioCtx.currentTime + SCHEDULE_AHEAD) {
                 scheduleMeasure(nextChordTime); nextChordTime += MEASURE_DURATION;
             }
         }
-
         function startMusic() {
             const c = ensureAudio(); if (!c) return;
             if (c.state === 'suspended') c.resume();
@@ -894,7 +810,6 @@
             startDrone(); nextChordTime = now + 0.3; musicPlaying = true;
             musicScheduler(); schedulerTimer = setInterval(musicScheduler, SCHEDULER_TICK);
         }
-
         function stopMusic() {
             if (!musicPlaying) return;
             musicPlaying = false;
@@ -909,7 +824,6 @@
             }
             stopDrone();
         }
-
         function playClickSound() {
             const c = ensureAudio(); if (!c) return;
             if (c.state === 'suspended') c.resume();
@@ -918,73 +832,43 @@
             const osc = c.createOscillator(); osc.type = 'sine';
             osc.frequency.setValueAtTime(520, now);
             osc.frequency.exponentialRampToValueAtTime(380, now + 0.07);
-            const harm = c.createOscillator(); harm.type = 'sine';
-            harm.frequency.setValueAtTime(1040, now);
-            harm.frequency.exponentialRampToValueAtTime(760, now + 0.07);
             const g = c.createGain();
             g.gain.setValueAtTime(0, now);
             g.gain.linearRampToValueAtTime(BASE_CLICK_VOLUME, now + 0.005);
             g.gain.exponentialRampToValueAtTime(FADE_EPSILON, now + 0.10);
-            const gh = c.createGain();
-            gh.gain.setValueAtTime(0, now);
-            gh.gain.linearRampToValueAtTime(BASE_CLICK_VOLUME * 0.18, now + 0.005);
-            gh.gain.exponentialRampToValueAtTime(FADE_EPSILON, now + 0.075);
-            const lp = c.createBiquadFilter();
-            lp.type = 'lowpass'; lp.frequency.value = 1800; lp.Q.value = 0.6;
-            osc.connect(g); harm.connect(gh); g.connect(lp); gh.connect(lp); lp.connect(compressor);
-            osc.start(now); harm.start(now); osc.stop(now + 0.14); harm.stop(now + 0.14);
-            osc.onended = () => { try { g.disconnect(); gh.disconnect(); lp.disconnect(); osc.disconnect(); harm.disconnect(); } catch (e) {} };
+            osc.connect(g); g.connect(compressor);
+            osc.start(now); osc.stop(now + 0.14);
         }
-
         function playSuccessSound() {
             const c = ensureAudio(); if (!c) return;
             if (!compressor) buildAudioGraph();
             const now = c.currentTime;
             [523.25, 659.25, 783.99, 1046.50].forEach((f, i) => {
                 const o = c.createOscillator(); o.type = 'sine'; o.frequency.value = f;
-                const h = c.createOscillator(); h.type = 'sine'; h.frequency.value = f * 2;
-                const g = c.createGain(); const gh = c.createGain();
+                const g = c.createGain();
                 const t = now + i * 0.11; const dur = 0.65;
                 g.gain.setValueAtTime(0, t);
                 g.gain.linearRampToValueAtTime(BASE_SUCCESS_VOLUME, t + 0.02);
-                g.gain.exponentialRampToValueAtTime(BASE_SUCCESS_VOLUME * 0.2, t + 0.35);
-                g.gain.linearRampToValueAtTime(FADE_EPSILON, t + dur);
-                gh.gain.setValueAtTime(0, t);
-                gh.gain.linearRampToValueAtTime(BASE_SUCCESS_VOLUME * 0.25, t + 0.02);
-                gh.gain.exponentialRampToValueAtTime(FADE_EPSILON, t + 0.4);
-                o.connect(g); h.connect(gh); g.connect(compressor); gh.connect(compressor);
-                o.start(t); h.start(t); o.stop(t + dur + 0.05); h.stop(t + dur + 0.05);
-                o.onended = () => { try { g.disconnect(); gh.disconnect(); o.disconnect(); h.disconnect(); } catch (e) {} };
+                g.gain.exponentialRampToValueAtTime(FADE_EPSILON, t + dur);
+                o.connect(g); g.connect(compressor);
+                o.start(t); o.stop(t + dur + 0.05);
             });
         }
-
         function playErrorSound() {
             const c = ensureAudio(); if (!c) return;
             if (c.state === 'suspended') c.resume();
             if (!compressor) buildAudioGraph();
             const now = c.currentTime;
-            [{ start: now, f1: 320, f2: 240 }, { start: now + 0.18, f1: 320, f2: 240 }].forEach((b) => {
+            [{ start: now }, { start: now + 0.18 }].forEach((b) => {
                 const osc = c.createOscillator(); osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(b.f1, b.start);
-                osc.frequency.exponentialRampToValueAtTime(b.f2, b.start + 0.14);
-                const sub = c.createOscillator(); sub.type = 'triangle';
-                sub.frequency.setValueAtTime(b.f1 / 2, b.start);
-                sub.frequency.exponentialRampToValueAtTime(b.f2 / 2, b.start + 0.14);
-                const g = c.createGain(); const gs = c.createGain();
+                osc.frequency.setValueAtTime(320, b.start);
+                osc.frequency.exponentialRampToValueAtTime(240, b.start + 0.14);
+                const g = c.createGain();
                 g.gain.setValueAtTime(0, b.start);
                 g.gain.linearRampToValueAtTime(BASE_ERROR_VOLUME * 0.6, b.start + 0.01);
-                g.gain.setValueAtTime(BASE_ERROR_VOLUME * 0.6, b.start + 0.10);
                 g.gain.exponentialRampToValueAtTime(FADE_EPSILON, b.start + 0.16);
-                gs.gain.setValueAtTime(0, b.start);
-                gs.gain.linearRampToValueAtTime(BASE_ERROR_VOLUME * 0.35, b.start + 0.01);
-                gs.gain.setValueAtTime(BASE_ERROR_VOLUME * 0.35, b.start + 0.10);
-                gs.gain.exponentialRampToValueAtTime(FADE_EPSILON, b.start + 0.16);
-                const lp = c.createBiquadFilter();
-                lp.type = 'lowpass'; lp.frequency.value = 900; lp.Q.value = 1.2;
-                osc.connect(g); sub.connect(gs); g.connect(lp); gs.connect(lp); lp.connect(compressor);
-                osc.start(b.start); sub.start(b.start);
-                osc.stop(b.start + 0.2); sub.stop(b.start + 0.2);
-                osc.onended = () => { try { g.disconnect(); gs.disconnect(); lp.disconnect(); osc.disconnect(); sub.disconnect(); } catch (e) {} };
+                osc.connect(g); g.connect(compressor);
+                osc.start(b.start); osc.stop(b.start + 0.2);
             });
         }
 
@@ -1009,7 +893,6 @@
                 el.addEventListener('click', () => playClickSound(), { passive: true });
             });
         }
-
         function armAutoStart() {
             const kick = () => {
                 unlockAudio();
@@ -1039,24 +922,17 @@
             return { plain: `User #${user.id}` };
         }
 
-        let selectedClassic = null;
-        let selectedUltimate = null;
-
+        let selectedClassic = null, selectedUltimate = null;
         document.querySelectorAll('#classic-ranks .rank-item').forEach(item => {
             item.addEventListener('click', () => {
                 document.querySelectorAll('#classic-ranks .rank-item').forEach(i => i.classList.remove('selected'));
-                item.classList.add('selected');
-                selectedClassic = item.dataset.rank;
-                playSuccessSound();
+                item.classList.add('selected'); selectedClassic = item.dataset.rank; playSuccessSound();
             });
         });
-
         document.querySelectorAll('#ultimate-ranks .rank-item').forEach(item => {
             item.addEventListener('click', () => {
                 document.querySelectorAll('#ultimate-ranks .rank-item').forEach(i => i.classList.remove('selected'));
-                item.classList.add('selected');
-                selectedUltimate = item.dataset.rank;
-                playSuccessSound();
+                item.classList.add('selected'); selectedUltimate = item.dataset.rank; playSuccessSound();
             });
         });
 
@@ -1066,9 +942,7 @@
         const changePhotoBtn = document.getElementById('change-photo-btn');
         let photoValid = false;
 
-        photoBox.addEventListener('click', () => {
-            if (!photoBox.classList.contains('checking')) photoInput.click();
-        });
+        photoBox.addEventListener('click', () => { if (!photoBox.classList.contains('checking')) photoInput.click(); });
 
         function loadImageFromFile(file) {
             return new Promise((resolve, reject) => {
@@ -1079,7 +953,6 @@
                 img.src = url;
             });
         }
-
         function rgbToHsv(r, g, b) {
             r /= 255; g /= 255; b /= 255;
             const max = Math.max(r, g, b), min = Math.min(r, g, b), d = max - min;
@@ -1093,29 +966,21 @@
             const s = max === 0 ? 0 : d / max;
             return [h, s, max];
         }
-
         async function validatePubgScreenshot(file) {
             if (!file.type || !file.type.startsWith('image/'))
                 return { ok: false, reason: 'Only image files are allowed (JPG / PNG).' };
             let img;
             try { img = await loadImageFromFile(file); }
             catch (e) { return { ok: false, reason: 'Could not read this image.' }; }
-
             const w = img.naturalWidth || img.width;
             const h = img.naturalHeight || img.height;
-
-            if (w < 640 || h < 360)
-                return { ok: false, reason: 'Image resolution is too low.' };
-            if (w <= h)
-                return { ok: false, reason: 'PUBG Mobile is a landscape game. Portrait images not accepted.' };
-
+            if (w < 640 || h < 360) return { ok: false, reason: 'Image resolution is too low.' };
+            if (w <= h) return { ok: false, reason: 'PUBG Mobile is a landscape game. Portrait images not accepted.' };
             const ratio = w / h;
             const allowedRatios = [1.333, 1.5, 1.6, 1.667, 1.778, 2.0, 2.056, 2.111, 2.167, 2.222, 2.333, 2.444];
             if (!allowedRatios.some(r => Math.abs(ratio - r) <= 0.06))
                 return { ok: false, reason: 'This image does not match phone/tablet screen ratio.' };
-
-            const CW = 240;
-            const CH = Math.max(1, Math.round(h * (CW / w)));
+            const CW = 240, CH = Math.max(1, Math.round(h * (CW / w)));
             const c2 = document.createElement('canvas');
             c2.width = CW; c2.height = CH;
             const cctx = c2.getContext('2d', { willReadFrequently: true });
@@ -1123,7 +988,6 @@
             let data;
             try { data = cctx.getImageData(0, 0, CW, CH).data; }
             catch (e) { return { ok: false, reason: 'Security error.' }; }
-
             const totalPx = CW * CH;
             let white = 0, black = 0, vivid = 0, green = 0, earth = 0, sky = 0, gray = 0;
             for (let i = 0; i < data.length; i += 4) {
@@ -1137,17 +1001,14 @@
                 else if (hue >= 8 && hue < 60 && sat >= 0.18 && val > 0.12) earth++;
                 else if (hue >= 175 && hue <= 260 && sat >= 0.08 && val > 0.35) sky++;
             }
-            const whiteR = white / totalPx, blackR = black / totalPx;
-            const vividR = vivid / totalPx;
+            const whiteR = white / totalPx, blackR = black / totalPx, vividR = vivid / totalPx;
             const gameR = (green + earth + sky + gray * 0.8) / totalPx;
-
             if (whiteR > 0.55) return { ok: false, reason: 'Looks like a document/chat screenshot.' };
             if (vividR > 0.32) return { ok: false, reason: 'Image is too colorful.' };
             if (blackR > 0.62) return { ok: false, reason: 'Image is too dark.' };
             if (gameR < 0.45) return { ok: false, reason: 'Does not look like a PUBG Mobile screenshot.' };
             return { ok: true, reason: '' };
         }
-
         function setPhotoBoxState(state) {
             const icon = photoBox.querySelector('.icon');
             const text = photoBox.querySelector('.text');
@@ -1167,15 +1028,13 @@
                 sub.textContent = 'JPG, PNG • Max 5MB • PUBG Mobile only';
             }
         }
-
         photoInput.addEventListener('change', async function (e) {
             const file = e.target.files[0];
             if (!file) return;
             if (file.size > 5 * 1024 * 1024) {
                 playErrorSound();
                 tg.showAlert("❌ File too large!\n\nMaximum size is 5 MB.");
-                resetPhoto();
-                return;
+                resetPhoto(); return;
             }
             setPhotoBoxState('checking');
             const result = await validatePubgScreenshot(file);
@@ -1199,7 +1058,6 @@
             };
             reader.readAsDataURL(file);
         });
-
         function resetPhoto() {
             photoInput.value = '';
             photoPreview.src = '';
@@ -1209,18 +1067,15 @@
             photoValid = false;
             setPhotoBoxState('idle');
         }
-
         function validatePlayerId(id) {
             if (!/^\d{11}$/.test(id)) return false;
             if (id[0] !== '5' && id[0] !== '6') return false;
             if (/^(\d)\1{10}$/.test(id)) return false;
             return true;
         }
-
         const playerIdInput = document.getElementById('player-id');
         const idError = document.getElementById('id-error');
         let idSoundTimer = null;
-
         playerIdInput.addEventListener('input', function() {
             const id = this.value.trim();
             playerIdInput.classList.remove('error', 'success');
@@ -1242,7 +1097,6 @@
         const killsInput = document.getElementById('kills');
         const killsError = document.getElementById('kills-error');
         let killsSoundTimer = null;
-
         killsInput.addEventListener('input', function() {
             this.value = this.value.replace(/[^0-9]/g, '');
             if (this.value.startsWith('0') && this.value.length > 1)
@@ -1264,7 +1118,6 @@
                 else playSuccessSound();
             }, 700);
         });
-
         function validateKills(k) {
             const val = parseInt(k);
             if (isNaN(val)) return false;
@@ -1293,7 +1146,7 @@
 
             showStatus('loading', 'Please wait, sending to channel.');
 
-            /* ===== CAPTION — TOMMY BOT uslubi ===== */
+            /* ===== ID MASKING: 524***19 (first 3 + *** + last 2) ===== */
             const hiddenId = playerId.substring(0, 3) + "***" + playerId.substring(9);
             const now = new Date();
             const hours   = String(now.getHours()).padStart(2, '0');
@@ -1301,7 +1154,6 @@
             const day     = String(now.getDate()).padStart(2, '0');
             const month   = String(now.getMonth() + 1).padStart(2, '0');
             const year    = now.getFullYear();
-
             const timeStr = `${hours}:${minutes}  ${day}.${month}.${year}`;
             const ownerInfo = buildOwnerInfo();
 
@@ -1315,25 +1167,17 @@
                 `\n` +
                 `👤 OWNER: @Tommy_1727 ✅`;
 
-            /* ===== BACKENDGA YUBORISH ===== */
             const formData = new FormData();
             formData.append('photo', file);
             formData.append('caption', caption);
 
             try {
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    body: formData
-                });
+                const response = await fetch(API_URL, { method: 'POST', body: formData });
                 const result = await response.json();
-
                 if (result.ok) {
                     playSuccessSound();
                     showStatus('success', 'Statistics sent to channel successfully!\n\n📢 ' + CHANNEL_USERNAME);
-                    setTimeout(() => {
-                        closeStatus();
-                        setTimeout(() => { tg.close(); }, 300);
-                    }, 3000);
+                    setTimeout(() => { closeStatus(); setTimeout(() => { tg.close(); }, 300); }, 3000);
                 } else {
                     playErrorSound();
                     showStatus('error', 'Telegram error:\n' + (result.description || 'Unknown error'));
@@ -1356,4 +1200,4 @@
         armAutoStart();
     </script>
 </body>
-    </html>
+</html>
