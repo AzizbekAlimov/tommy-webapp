@@ -20,7 +20,6 @@
         }
         #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
 
-        /* STATIK gradient — endi har frame'da repaint yo'q */
         .bg-gradient {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
             background:
@@ -29,7 +28,6 @@
                 linear-gradient(135deg, #0a0820 0%, #1a1145 45%, #12162e 75%, #0a0820 100%);
         }
 
-        /* Aurora — endi filter: blur() YO'Q, glow gradient ichida */
         .aurora {
             position: fixed;
             width: 65vw; height: 65vw;
@@ -65,7 +63,6 @@
         }
         .top-row > * { pointer-events: auto; }
 
-        /* backdrop-filter olib tashlandi — bu canvas ustida har frame'da qayta blur qilardi */
         .fps-counter {
             padding: 4px 9px; border-radius: 10px;
             background: rgba(0, 0, 0, 0.78);
@@ -127,7 +124,6 @@
             display: flex; align-items: center; justify-content: center;
             font-size: 45px;
             box-shadow: 0 8px 24px rgba(76, 175, 80, 0.5), 0 0 40px rgba(76,175,80,0.35);
-            /* Faqat transform animatsiya — box-shadow animatsiyasi repaint qiladi */
             animation: logoPulse 3s ease-in-out infinite;
             position: relative; z-index: 2;
             will-change: transform;
@@ -146,7 +142,6 @@
             will-change: transform;
             backface-visibility: hidden;
         }
-        /* filter: drop-shadow YO'Q — endi box-shadow (kompozitor uchun arzon) */
         .header .ring-1 {
             width: 110px; height: 110px;
             border-top-color: #4CAF50;
@@ -189,7 +184,6 @@
         }
         .header p { color: #aaa; font-size: 13px; }
 
-        /* backdrop-filter olib tashlandi — rgba fon ishlatildi */
         .card {
             background: rgba(20, 16, 45, 0.72);
             border-radius: 18px; padding: 18px; margin-bottom: 14px;
@@ -343,7 +337,6 @@
             100% { transform: scale(1); opacity: 1; }
         }
 
-        /* Rotating conic-gradient olib tashlandi — statik radial */
         .status-box::before {
             content: '';
             position: absolute; inset: 0;
@@ -597,11 +590,9 @@
 
         // ================= Canvas =================
         const canvas = document.getElementById('bg-canvas');
-        // desynchronized = tearing emas, lekin kompozitor uchun tezroq
         const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true });
         let W = 0, H = 0, particles = [], ripples = [], maxParticles = 25;
 
-        // Low-end qurilmalarda DPR ni 1 ga tushiramiz — eng katta perf yutug'i
         const IS_LOW_END = (navigator.hardwareConcurrency || 4) <= 4
                         || /Android [1-8]\./.test(navigator.userAgent);
         const DPR_CAP = IS_LOW_END ? 1 : 1.25;
@@ -633,7 +624,7 @@
                 r: Math.random() * 1.4 + 0.6,
                 vx: (Math.random() - 0.5) * 0.28,
                 vy: (Math.random() - 0.5) * 0.28,
-                color: `hsla(${hue}, 80%, 68%, ${a})`  // oldindan hisoblangan string
+                color: `hsla(${hue}, 80%, 68%, ${a})`
             };
         }
 
@@ -677,7 +668,6 @@
             ctx.clearRect(0, 0, W, H);
             const n = particles.length;
 
-            // Connections — faqat FPS yetarli bo'lsa
             if (connectionsEnabled && n > 1) {
                 ctx.lineWidth = 0.55;
                 for (let i = 0; i < n; i++) {
@@ -698,7 +688,6 @@
                 }
             }
 
-            // Particles
             for (let i = 0; i < n; i++) {
                 const p = particles[i];
                 p.x += p.vx; p.y += p.vy;
@@ -710,7 +699,6 @@
                 ctx.fill();
             }
 
-            // Ripples
             for (let i = ripples.length - 1; i >= 0; i--) {
                 const rp = ripples[i];
                 rp.life += 1 / 60;
@@ -724,7 +712,6 @@
             }
         }
 
-        // Frame limiter — 120Hz ekranlarda 60 FPS da ushlab turadi
         const FRAME_INTERVAL = 1000 / 60;
         let lastFrameTime = 0, masterRafId = null;
 
@@ -741,7 +728,6 @@
                 if (currentFPS < 40) fpsCounterEl.classList.add('bad');
                 else if (currentFPS < 55) fpsCounterEl.classList.add('low');
 
-                // Adaptive: 3 marta ketma-ket past FPS → sifatni tushiramiz
                 if (currentFPS < 50) {
                     lowFpsStreak++; highFpsStreak = 0;
                     if (lowFpsStreak >= 3 && particleCountMult > 0.35) {
@@ -789,10 +775,11 @@
         let audioCtx = null, musicBus = null, compressor = null, musicFilter = null;
         let musicDelay = null, musicDelayFb = null, musicDelayWet = null;
         let musicPlaying = false, schedulerTimer = null;
+        let schedulerWorker = null;
         let droneOsc1 = null, droneGain1 = null, droneOsc2 = null, droneGain2 = null,
             droneOsc3 = null, droneGain3 = null;
 
-        const SCHEDULE_AHEAD = 0.8, SCHEDULER_TICK = 200, MEASURE_DURATION = 12.0;
+        const SCHEDULE_AHEAD = 1.5, SCHEDULER_TICK = 120, MEASURE_DURATION = 12.0;
         const NOTE_FADE_IN = 1.5, NOTE_FADE_OUT = 2.0, FADE_EPSILON = 0.0008;
         const BASE_MUSIC_VOLUME = 0.055, BASE_CLICK_VOLUME = 0.018;
         const BASE_SUCCESS_VOLUME = 0.032, BASE_ERROR_VOLUME = 0.038;
@@ -840,11 +827,25 @@
             musicFilter.Q.value = 0.4; musicFilter.connect(musicBus);
 
             musicDelay = c.createDelay(2.0); musicDelay.delayTime.value = 0.65;
-            musicDelayFb = c.createGain(); musicDelayFb.gain.value = 0.38;
-            musicDelayWet = c.createGain(); musicDelayWet.gain.value = 0.40;
+            musicDelayFb = c.createGain(); musicDelayFb.gain.value = 0.28;
+            musicDelayWet = c.createGain(); musicDelayWet.gain.value = 0.32;
             musicDelay.connect(musicDelayFb); musicDelayFb.connect(musicDelay);
             musicDelay.connect(musicDelayWet); musicDelayWet.connect(musicBus);
         }
+
+        function initSchedulerWorker() {
+            if (schedulerWorker) return schedulerWorker;
+            try {
+                const code = "let t=null;self.onmessage=e=>{if(e.data==='start'){if(t)clearInterval(t);t=setInterval(()=>self.postMessage('tick'),120);}else if(e.data==='stop'){if(t){clearInterval(t);t=null;}}};";
+                const blob = new Blob([code], { type: 'application/javascript' });
+                schedulerWorker = new Worker(URL.createObjectURL(blob));
+                schedulerWorker.onmessage = () => musicScheduler();
+            } catch (e) {
+                schedulerWorker = null;
+            }
+            return schedulerWorker;
+        }
+
         function startDrone() {
             const c = audioCtx;
             droneOsc1 = c.createOscillator(); droneOsc1.type = 'sine'; droneOsc1.frequency.value = 87.31;
@@ -925,7 +926,15 @@
         }
         function musicScheduler() {
             if (!musicPlaying || !audioCtx) return;
-            while (nextChordTime < audioCtx.currentTime + SCHEDULE_AHEAD) {
+            const now = audioCtx.currentTime;
+
+            if (nextChordTime < now + 0.05) {
+                nextChordTime = now + 0.05;
+            }
+
+            const threshold = now + SCHEDULE_AHEAD;
+            let safety = 0;
+            while (nextChordTime < threshold && safety++ < 4) {
                 scheduleMeasure(nextChordTime);
                 nextChordTime += MEASURE_DURATION;
             }
@@ -943,12 +952,23 @@
             nextChordTime = now + 0.3;
             musicPlaying = true;
             musicScheduler();
-            schedulerTimer = setInterval(musicScheduler, SCHEDULER_TICK);
+
+            const w = initSchedulerWorker();
+            if (w) {
+                w.postMessage('start');
+            } else {
+                schedulerTimer = setInterval(musicScheduler, SCHEDULER_TICK);
+            }
         }
         function stopMusic() {
             if (!musicPlaying) return;
             musicPlaying = false;
+
+            if (schedulerWorker) {
+                try { schedulerWorker.postMessage('stop'); } catch (e) {}
+            }
             if (schedulerTimer) { clearInterval(schedulerTimer); schedulerTimer = null; }
+
             if (musicBus && audioCtx) {
                 const now = audioCtx.currentTime;
                 try {
@@ -1334,4 +1354,4 @@
         armAutoStart();
     </script>
 </body>
-                                      </html>
+    </html>
