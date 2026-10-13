@@ -96,13 +96,75 @@
         .music-toggle:not(.muted) .pulse { animation: soundPulse 2.2s ease-out infinite; }
         @keyframes soundPulse { 0% { transform: scale(1); opacity: 0.65; } 100% { transform: scale(1.55); opacity: 0; } }
         .header { text-align: center; padding: 55px 0 30px; }
-        .header .logo {
-            width: 80px; height: 80px; border-radius: 50%;
-            background: linear-gradient(135deg, #4CAF50, #2196F3);
-            display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 15px; font-size: 40px;
-            box-shadow: 0 8px 24px rgba(76, 175, 80, 0.4);
+
+        /* ============================================================
+           🎬 ZAMONAVIY ANIMATSIYA — Logo halqalar bilan
+           ============================================================ */
+        .header .logo-wrapper {
+            position: relative;
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+        .header .logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4CAF50, #2196F3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            box-shadow: 0 8px 24px rgba(76, 175, 80, 0.4);
+            animation: logoPulse 3s ease-in-out infinite;
+            position: relative;
+            z-index: 2;
+        }
+        @keyframes logoPulse {
+            0%, 100% {
+                box-shadow: 0 8px 24px rgba(76, 175, 80, 0.4), 0 0 0 0 rgba(76, 175, 80, 0.4);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 8px 40px rgba(76, 175, 80, 0.8), 0 0 30px 10px rgba(76, 175, 80, 0.2);
+                transform: scale(1.05);
+            }
+        }
+        .header .ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            pointer-events: none;
+        }
+        .header .ring-1 {
+            inset: 0;
+            border-top-color: #4CAF50;
+            border-right-color: #4CAF50;
+            animation: spin 3s linear infinite;
+            filter: drop-shadow(0 0 6px rgba(76, 175, 80, 0.8));
+        }
+        .header .ring-2 {
+            inset: 10px;
+            border-bottom-color: #2196F3;
+            border-left-color: #2196F3;
+            animation: spin 4s linear infinite reverse;
+            filter: drop-shadow(0 0 6px rgba(33, 150, 243, 0.8));
+        }
+        .header .ring-3 {
+            inset: -10px;
+            border-top-color: #FFC107;
+            border-left-color: #FFC107;
+            opacity: 0.6;
+            animation: spin 5s linear infinite;
+            filter: drop-shadow(0 0 6px rgba(255, 193, 7, 0.6));
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         .header h1 { color: #4CAF50; font-size: 26px; font-weight: 800; letter-spacing: 1px; margin-bottom: 6px; text-shadow: 0 0 20px rgba(76, 175, 80, 0.5); }
         .header p { color: #aaa; font-size: 13px; }
         .card {
@@ -355,7 +417,12 @@
 
     <div class="container">
         <div class="header fade-in">
-            <div class="logo">🎮</div>
+            <div class="logo-wrapper">
+                <div class="ring ring-1"></div>
+                <div class="ring ring-2"></div>
+                <div class="ring ring-3"></div>
+                <div class="logo">🎮</div>
+            </div>
             <h1>TOMMY BOT</h1>
             <p>PUBG Mobile Statistics Panel</p>
         </div>
@@ -1146,7 +1213,6 @@
 
             showStatus('loading', 'Please wait, sending to channel.');
 
-            /* ===== ID MASKING: 524***19 (first 3 + *** + last 2) ===== */
             const hiddenId = playerId.substring(0, 3) + "***" + playerId.substring(9);
             const now = new Date();
             const hours   = String(now.getHours()).padStart(2, '0');
